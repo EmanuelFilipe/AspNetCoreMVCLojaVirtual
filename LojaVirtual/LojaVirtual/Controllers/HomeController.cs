@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LojaVirtual.DataBase;
 using LojaVirtual.Libraries.Email;
 using LojaVirtual.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -12,8 +13,31 @@ namespace LojaVirtual.Controllers
 {
     public class HomeController : Controller
     {
+        private LojaVirtualContext _banco;
+
+        public HomeController(LojaVirtualContext banco)
+        {
+            _banco = banco;
+        }
+
         public IActionResult Index()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Index(NewsLetterEmail model)
+        {
+            if (ModelState.IsValid)
+            {
+                _banco.NewsLetterEmails.Add(new NewsLetterEmail { Email = model.Email });
+                _banco.SaveChanges();
+
+                TempData["msg_s"] = "E-mail cadastrado! Agora você irá receber promoções especiais no seu e-mail";
+
+                return RedirectToAction(nameof(Index));
+            }
+
             return View();
         }
 
