@@ -99,6 +99,23 @@ namespace LojaVirtual.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult CadastroCliente(Cliente model)
+        {
+            // valida os dataannotation definidas na model: Ex: Required
+            if (ModelState.IsValid)
+            {
+                _banco.Add(model);
+                _banco.SaveChanges();
+                TempData["msg_s"] = "Cadastro realizado com sucesso!";
+
+                //TODO - Implementar redirecionamentos diferentes (painel, carrinho de compras, etc)
+                return RedirectToAction(nameof(CadastroCliente));
+            }
+
+            return View();
+        }
+
         public IActionResult CarrinhoCompras()
         {
             return View();
