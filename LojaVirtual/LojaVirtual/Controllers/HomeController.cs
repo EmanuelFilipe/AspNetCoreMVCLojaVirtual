@@ -7,17 +7,20 @@ using System.Threading.Tasks;
 using LojaVirtual.DataBase;
 using LojaVirtual.Libraries.Email;
 using LojaVirtual.Models;
+using LojaVirtual.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LojaVirtual.Controllers
 {
     public class HomeController : Controller
     {
-        private LojaVirtualContext _banco;
+        private IClienteRepository _repositoryCliente;
+        private INewsLetterRepository _newsLetterRepository;
 
-        public HomeController(LojaVirtualContext banco)
+        public HomeController(IClienteRepository repositoryCliente, INewsLetterRepository newsLetterRepository)
         {
-            _banco = banco;
+            _repositoryCliente = repositoryCliente;
+            _newsLetterRepository = newsLetterRepository;
         }
 
         public IActionResult Index()
@@ -30,11 +33,10 @@ namespace LojaVirtual.Controllers
         {
             if (ModelState.IsValid)
             {
-                _banco.NewsLetterEmails.Add(new NewsLetterEmail { Email = model.Email });
-                _banco.SaveChanges();
+                _newsLetterRepository.Cadastrar(new NewsLetterEmail { Email = model.Email });
 
                 TempData["msg_s"] = "E-mail cadastrado! Agora você irá receber promoções especiais no seu e-mail";
-
+                
                 return RedirectToAction(nameof(Index));
             }
 
@@ -105,8 +107,7 @@ namespace LojaVirtual.Controllers
             // valida os dataannotation definidas na model: Ex: Required
             if (ModelState.IsValid)
             {
-                _banco.Add(model);
-                _banco.SaveChanges();
+                _repositoryCliente.Cadastrar(model);
                 TempData["msg_s"] = "Cadastro realizado com sucesso!";
 
                 //TODO - Implementar redirecionamentos diferentes (painel, carrinho de compras, etc)
