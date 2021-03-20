@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LojaVirtual.DataBase;
+﻿using LojaVirtual.DataBase;
+using LojaVirtual.Libraries.Login;
+using LojaVirtual.Libraries.Sessao;
+using LojaVirtual.Repositories;
+using LojaVirtual.Repositories.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore.SqlServer;
-using Microsoft.EntityFrameworkCore;
-using LojaVirtual.Repositories.Contracts;
-using LojaVirtual.Repositories;
 
 namespace LojaVirtual
 {
@@ -28,7 +24,7 @@ namespace LojaVirtual
 
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddHttpContextAccessor();
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<INewsLetterRepository, NewsLetterRepository>();
 
@@ -38,6 +34,14 @@ namespace LojaVirtual
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            //Session - configuração
+            services.AddMemoryCache(); // guarda dados na memória
+            services.AddSession(options => {
+                options.Cookie.IsEssential = true;
+            });
+
+            services.AddScoped<Sessao>();
+            services.AddScoped<LoginCliente>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -61,7 +65,7 @@ namespace LojaVirtual
             app.UseHttpsRedirection();
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {
@@ -69,6 +73,7 @@ namespace LojaVirtual
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            app.UseCookiePolicy();
         }
     }
 }

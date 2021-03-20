@@ -51,7 +51,7 @@ namespace LojaVirtual.Repositories
         public Cliente Login(string email, string senha)
         {
             return _banco.Clientes.DefaultIfEmpty(new Cliente())
-                                  .Where(x => x.Email == email && x.Senha == senha).SingleOrDefault();
+                                  .Where(x => x.Email == email && x.Senha == senha).FirstOrDefault();
         }
     }
 }

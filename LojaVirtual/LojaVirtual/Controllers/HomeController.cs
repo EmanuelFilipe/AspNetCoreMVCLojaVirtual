@@ -6,8 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using LojaVirtual.DataBase;
 using LojaVirtual.Libraries.Email;
+using LojaVirtual.Libraries.Login;
 using LojaVirtual.Models;
 using LojaVirtual.Repositories.Contracts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LojaVirtual.Controllers
@@ -16,11 +18,15 @@ namespace LojaVirtual.Controllers
     {
         private IClienteRepository _repositoryCliente;
         private INewsLetterRepository _newsLetterRepository;
+        private LoginCliente _loginCliente;
 
-        public HomeController(IClienteRepository repositoryCliente, INewsLetterRepository newsLetterRepository)
+        public HomeController(IClienteRepository repositoryCliente,
+                              INewsLetterRepository newsLetterRepository,
+                              LoginCliente loginCliente)
         {
             _repositoryCliente = repositoryCliente;
             _newsLetterRepository = newsLetterRepository;
+            _loginCliente = loginCliente;
         }
 
         public IActionResult Index()
@@ -36,7 +42,7 @@ namespace LojaVirtual.Controllers
                 _newsLetterRepository.Cadastrar(new NewsLetterEmail { Email = model.Email });
 
                 TempData["msg_s"] = "E-mail cadastrado! Agora você irá receber promoções especiais no seu e-mail";
-                
+
                 return RedirectToAction(nameof(Index));
             }
 
@@ -94,6 +100,33 @@ namespace LojaVirtual.Controllers
         public IActionResult Login()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login(Cliente cliente)
+        {
+            Cliente clienteDB = _repositoryCliente.Login(cliente.Email, cliente.Senha);
+
+            if (clienteDB != null)
+            {
+                _loginCliente.Login(clienteDB);
+                return RedirectToAction(nameof(Painel));
+            }
+            else
+            {
+                ViewData["msg_e"] = "Usuário não encontrado, verifique o e-mail e senha digitado!";
+                return View();
+            }
+        }
+
+        public IActionResult Painel()
+        {
+            Cliente cliente = _loginCliente.GetCliente();
+
+            if (cliente != null)
+                return new ContentResult() { Content = $"Usuário: {cliente.Id} - Email: {cliente.Email} - Logado!" };
+            else
+                return new ContentResult() { Content = "Acesso Negado!" };
         }
 
         public IActionResult CadastroCliente()
