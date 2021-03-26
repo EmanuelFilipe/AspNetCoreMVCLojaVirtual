@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LojaVirtual.DataBase;
 using LojaVirtual.Libraries.Email;
+using LojaVirtual.Libraries.Filtro;
 using LojaVirtual.Libraries.Login;
 using LojaVirtual.Models;
 using LojaVirtual.Repositories.Contracts;
@@ -119,14 +120,10 @@ namespace LojaVirtual.Controllers
             }
         }
 
+        [ClienteAutorizacao]
         public IActionResult Painel()
         {
-            Cliente cliente = _loginCliente.GetCliente();
-
-            if (cliente != null)
-                return new ContentResult() { Content = $"Usuário: {cliente.Id} - Email: {cliente.Email} - Logado!" };
-            else
-                return new ContentResult() { Content = "Acesso Negado!" };
+            return View();
         }
 
         public IActionResult CadastroCliente()

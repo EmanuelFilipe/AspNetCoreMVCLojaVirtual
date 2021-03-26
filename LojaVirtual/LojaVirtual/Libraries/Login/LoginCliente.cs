@@ -1,6 +1,5 @@
 ﻿using LojaVirtual.Models;
 using Newtonsoft.Json;
-using LojaVirtual.Libraries.Sessao;
 
 namespace LojaVirtual.Libraries.Login
 {
