@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace LojaVirtual.Repositories.Contracts
 {
@@ -17,5 +18,7 @@ namespace LojaVirtual.Repositories.Contracts
         Categoria GetCategoria(int id);
 
         IEnumerable<Categoria> GetAllCategorias();
+
+        IPagedList<Categoria> GetAllCategorias(int? pagina);
     }
 }
