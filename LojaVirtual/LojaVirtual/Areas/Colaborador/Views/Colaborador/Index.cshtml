@@ -10,15 +10,13 @@
 
 <!-- Modal -->
 <div class="modal fade" id="exclusao-modal" tabindex="-1" aria-labelledby="exclusao-modal-label" aria-hidden="true">
-	<input type="hidden" id="id-ip" name="dados" value="" />
+	<input type="hidden" id="id-registro" name="dados" value="" />
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exclusao-modal-label">Exclusão</h5>
+				<h5 class="modal-title" id="exclusao-modal-label">Atenção</h5>
 				<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
-						style="border: none; background-color: white; cursor: pointer">
-					X
-				</button>
+					style="border: none; background-color: white; cursor: pointer">X</button>
 			</div>
 			<div class="modal-body">
 				Tem certeza que deseja excluir este registro?
@@ -75,12 +73,11 @@ else
 <script type="text/javascript">
 
 	function carregarModalExcluir(id) {
-		document.getElementById("id-ip").value = id;
+		document.getElementById("id-registro").value = id;
 		$('#exclusao-modal').modal();
 	}
 
 	function ExcluirRegistro(id) {
-		debugger
 		var url = "@Url.Action("Excluir", "Colaborador")";
 
 		$.ajax({
@@ -91,9 +88,9 @@ else
 			dataType: "json",
 			success: function (dados)
 			{
-				debugger
-				if (dados.status)
+				if (dados.status) {
 					window.location.href = "@Url.Action("Index", "Colaborador")";
+				}
 			}
 		});
 	}
