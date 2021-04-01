@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
-	$('#btn-excluir-categoria').on('click', function (e) {
+	$('#btn-excluir').on('click', function (e) {
 		e.preventDefault();
-		ExcluirCategoria(parseInt(document.getElementById('id-ip').value));
+		ExcluirRegistro(parseInt(document.getElementById('id-ip').value));
 	});
 });

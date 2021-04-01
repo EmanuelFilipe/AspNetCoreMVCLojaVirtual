@@ -1,8 +1,6 @@
 ﻿using LojaVirtual.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using X.PagedList;
 
 namespace LojaVirtual.Repositories.Contracts
 {
@@ -18,6 +16,6 @@ namespace LojaVirtual.Repositories.Contracts
 
         Colaborador GetColaborador(int id);
 
-        IEnumerable<Colaborador> GetAllColaboradores();
+        IPagedList<Colaborador> GetAllColaboradores(int? pagina);
     }
 }
