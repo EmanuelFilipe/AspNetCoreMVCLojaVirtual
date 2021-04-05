@@ -1,11 +1,10 @@
 ﻿using LojaVirtual.DataBase;
 using LojaVirtual.Models;
 using LojaVirtual.Repositories.Contracts;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using X.PagedList;
 
 namespace LojaVirtual.Repositories
@@ -24,6 +23,22 @@ namespace LojaVirtual.Repositories
         public void Atualizar(Colaborador colaborador)
         {
             _banco.Update(colaborador);
+            
+            // informa ao EF que o campo 'Senha' não deve ser modificado
+            _banco.Entry(colaborador).Property(c => c.Senha).IsModified = false;
+
+            _banco.SaveChanges();
+        }
+
+        public void AtualizarSenha(Colaborador colaborador)
+        {
+            _banco.Update(colaborador);
+
+            // informa ao EF que o campos abaixo não devem ser modificados
+            _banco.Entry(colaborador).Property(c => c.Nome).IsModified = false;
+            _banco.Entry(colaborador).Property(c => c.Email).IsModified = false;
+            _banco.Entry(colaborador).Property(c => c.Tipo).IsModified = false;
+
             _banco.SaveChanges();
         }
 
@@ -53,6 +68,11 @@ namespace LojaVirtual.Repositories
         public Colaborador GetColaborador(int id)
         {
             return _banco.Colaboradores.Find(id);
+        }
+
+        public List<Colaborador> GetColaboradorPorEmail(string email)
+        {
+            return _banco.Colaboradores.Where(c => c.Email == email).AsNoTracking().ToList();
         }
 
         public Colaborador Login(string email, string senha)

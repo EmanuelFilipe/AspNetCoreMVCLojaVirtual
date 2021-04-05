@@ -12,10 +12,12 @@ namespace LojaVirtual.Repositories.Contracts
 
         void Atualizar(Colaborador colaborador);
 
+        void AtualizarSenha(Colaborador colaborador);
+
         void Excluir(int id);
 
         Colaborador GetColaborador(int id);
-
+        List<Colaborador> GetColaboradorPorEmail(string email);
         IPagedList<Colaborador> GetAllColaboradores(int? pagina);
     }
 }

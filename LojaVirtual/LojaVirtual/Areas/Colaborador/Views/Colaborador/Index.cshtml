@@ -54,8 +54,9 @@
 						<td scope="row">@colaborador.Nome</td>
 						<td scope="row">@colaborador.Email</td>
 						<td>
-							<a asp-action="Atualizar" asp-route-id="@colaborador.Id" class="btn btn-secondary">Atualizar</a>
-							<button class="btn btn-danger" title="Excluirr" onclick="carregarModalExcluir(@colaborador.Id)">Excluir</button>
+							<a asp-action="GerarSenha" asp-route-id="@colaborador.Id" class="btn btn-secondary">Gerar Senha</a>
+							<a asp-action="Atualizar" asp-route-id="@colaborador.Id" class="btn btn-primary">Atualizar</a>
+							<button class="btn btn-danger" title="Excluir" onclick="carregarModalExcluir(@colaborador.Id)">Excluir</button>
 						</td>
 					</tr>
 				}
