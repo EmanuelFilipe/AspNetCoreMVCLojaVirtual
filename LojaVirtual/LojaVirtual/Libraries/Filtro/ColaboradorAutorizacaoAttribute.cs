@@ -1,5 +1,6 @@
 ﻿using LojaVirtual.Libraries.Login;
 using LojaVirtual.Models;
+using LojaVirtual.Models.Constantes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
@@ -14,7 +15,7 @@ namespace LojaVirtual.Libraries.Filtro
         LoginColaborador _loginColaborador;
         private string _tipoColaboradorAutorizado;
 
-        public ColaboradorAutorizacaoAttribute(string tipoColaboradorAutorizado = "C")
+        public ColaboradorAutorizacaoAttribute(string tipoColaboradorAutorizado = ColaboradorTipoConstante.Comum)
         {
             _tipoColaboradorAutorizado = tipoColaboradorAutorizado;
         }
@@ -29,7 +30,7 @@ namespace LojaVirtual.Libraries.Filtro
                 context.Result = new RedirectToActionResult("Login", "Home", null);
             else
             {
-                if (colaborador.Tipo == "C" && _tipoColaboradorAutorizado == "G")
+                if (colaborador.Tipo == ColaboradorTipoConstante.Comum && _tipoColaboradorAutorizado == ColaboradorTipoConstante.Gerente)
                 {
                     context.Result = new ForbidResult();
                 }

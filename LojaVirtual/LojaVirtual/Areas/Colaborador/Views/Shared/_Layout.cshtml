@@ -83,7 +83,7 @@
 							</a>
 						</li>
 
-						@if (colaborador.GetColaborador().Tipo == "G")
+						@if (colaborador.GetColaborador().Tipo == ColaboradorTipoConstante.Gerente)
 						{
 							<li class="nav-item">
 								<a class="nav-link" asp-controller="Colaborador" asp-action="Index">

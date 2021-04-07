@@ -83,6 +83,7 @@ namespace LojaVirtual.Areas.Colaborador.Controllers
         }
 
         [HttpPost]
+        [ValidateHttpReferer]
         public JsonResult Excluir([FromForm]int id)
         {
             _categoriaRepository.Excluir(id);
