@@ -1,5 +1,6 @@
 ﻿using LojaVirtual.Models;
 using System.Collections.Generic;
+using X.PagedList;
 
 namespace LojaVirtual.Repositories.Contracts
 {
@@ -15,6 +16,6 @@ namespace LojaVirtual.Repositories.Contracts
 
         Cliente GetCliente(int id);
 
-        IEnumerable<Cliente> GetAllClientes();
+        IPagedList<Cliente> GetAllClientes(int? pagina, string pesquisa);
     }
 }
