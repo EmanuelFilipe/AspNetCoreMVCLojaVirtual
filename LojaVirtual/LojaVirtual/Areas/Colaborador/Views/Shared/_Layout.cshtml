@@ -11,6 +11,7 @@
 	<title>@ViewBag.Title</title>
 
 	<!-- Bootstrap core CSS -->
+	<link href="~/css/StyleSheet.css" rel="stylesheet" />
 	<link href="~/resources/lib/bootstrap-4.2.1-dist/css/bootstrap.min.css" rel="stylesheet">
 	<link href="~/resources/lib/pagedlist/PagedList.css" rel="stylesheet" type="text/css" />
 
@@ -25,19 +26,19 @@
 
 
 	<style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
+		.bd-placeholder-img {
+			font-size: 1.125rem;
+			text-anchor: middle;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			user-select: none;
+		}
 
-      @@media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
+		@@media (min-width: 768px) {
+			.bd-placeholder-img-lg {
+				font-size: 3.5rem;
+			}
+		}
 	</style>
 
 
@@ -83,7 +84,7 @@
 							</a>
 						</li>
 
-						@if (colaborador.GetColaborador().Tipo == ColaboradorTipoConstante.Gerente)
+						@if (colaborador.GetColaborador() != null && colaborador.GetColaborador().Tipo == ColaboradorTipoConstante.Gerente)
 						{
 							<li class="nav-item">
 								<a class="nav-link" asp-controller="Colaborador" asp-action="Index">
@@ -155,10 +156,11 @@
 	</div>
 
 	<script src="~/resources/lib/jquery3.3.1/jquery-3.3.1.min.js"></script>
-	<script src="~/js/Actions.js"></script>
+	<script src="~/resources/lib/mask/jquery.mask.js"></script>
 	<script src="~/resources/lib/bootstrap-4.2.1-dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/resources/lib/feather/feather.js"></script>
 	<script src="~/resources/lib/charts/charts.js"></script>
 	<script src="~/resources/lib/dashboard/dashboard.js"></script>
+	<script src="~/js/Actions.js"></script>
 </body>
 </html>

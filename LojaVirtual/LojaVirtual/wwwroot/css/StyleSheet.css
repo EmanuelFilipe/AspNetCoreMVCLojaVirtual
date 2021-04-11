@@ -5,3 +5,15 @@
 	color: red;
 	display: block;
 }
+
+.Imagens div {
+	text-align: center;
+}
+.Imagens .btn-imagem-excluir {
+	width: 100% !important;
+	margin-bottom: 30px;
+}
+
+.img-thumbnail {
+	width: 100%;
+}

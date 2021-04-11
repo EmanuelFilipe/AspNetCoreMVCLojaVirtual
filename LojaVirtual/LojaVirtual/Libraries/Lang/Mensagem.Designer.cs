@@ -106,6 +106,15 @@ namespace LojaVirtual.Libraries.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to O valor do campo {0} não se encontra entre {1} e {2}.
+        /// </summary>
+        public static string MSG_E006 {
+            get {
+                return ResourceManager.GetString("MSG_E006", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Registro salvo com sucesso.
         /// </summary>
         public static string MSG_S001 {
@@ -122,14 +131,12 @@ namespace LojaVirtual.Libraries.Lang {
                 return ResourceManager.GetString("MSG_S002", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to Registro excluído com sucesso.
+        ///   Looks up a localized string similar to Email enviáda para o colaborador com sucesso.
         /// </summary>
-        public static string MSG_S003
-        {
-            get
-            {
+        public static string MSG_S003 {
+            get {
                 return ResourceManager.GetString("MSG_S003", resourceCulture);
             }
         }

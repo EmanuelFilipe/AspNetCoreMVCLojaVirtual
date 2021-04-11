@@ -1,0 +1,115 @@
+﻿@model X.PagedList.IPagedList<Produto>
+
+@{
+	ViewData["Title"] = "Index";
+	var pesquisa = Context.Request.Query["pesquisa"];
+}
+
+<h1>Produto</h1>
+<br /><br />
+
+<form method="get">
+	<div class="mb-3">
+		<label for="pesquisa"></label>
+		<input type="text" name="pesquisa" id="pesquisa" value="@pesquisa" class="form-control" placeholder="digite o nome do produto">
+	</div>
+
+	<button type="submit" class="btn btn-primary">Ok</button>
+</form>
+
+<br /><br />
+
+<!-- Modal -->
+<div class="modal fade" id="exclusao-modal" tabindex="-1" aria-labelledby="exclusao-modal-label" aria-hidden="true">
+	<input type="hidden" id="id-registro" name="dados" value="" />
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exclusao-modal-label">Atenção</h5>
+				<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
+						style="border: none; background-color: white; cursor: pointer">
+					X
+				</button>
+			</div>
+			<div class="modal-body">
+				Tem certeza que deseja excluir este registro?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+				<a class="btn btn-primary" id="btn-excluir" style="color: white;">Excluir</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+@if (TempData["MSG_S"] != null)
+{
+	<p class="alert alert-success">@TempData["MSG_S"]</p>
+}
+
+<a asp-action="Cadastrar" class="btn btn-primary">Cadastrar</a>
+<br /><br />	
+
+@if (Model != null && Model.Count > 0)
+{
+	<div class="table-responsive">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th scope="col">@Html.DisplayNameFor(model => model.First().Id)</th>
+					<th scope="col">@Html.DisplayNameFor(model => model.First().Nome)</th>
+					<th scope="col">@Html.DisplayNameFor(model => model.First().Categoria)</th>
+					<th scope="col">@Html.DisplayNameFor(model => model.First().Valor)</th>
+					<th scope="col">Ações</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (Produto produto in Model)
+				{
+				<tr>
+					<td scope="row">@produto.Id</td>
+					<td scope="row">@produto.Nome</td>
+					<td scope="row">@produto.Id</td>
+					<td scope="row">@produto.Valor</td>
+					<td>
+						<a asp-action="Atualizar" asp-route-id="@produto.Id" class="btn btn-secondary">Atualizar</a>
+						<button class="btn btn-danger" title="Excluir" onclick="carregarModalExcluir(@produto.Id)">Excluir</button>
+					</td>
+				</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+
+	@Html.PagedListPager((IPagedList)Model, pagina => Url.Action("Index", new { pagina = pagina, pesquisa = pesquisa }))
+}
+else
+{
+	<span>Nenhum registro cadastrado!</span>
+}
+
+<script type="text/javascript">
+
+	function carregarModalExcluir(id) {
+		document.getElementById("id-registro").value = id;
+		$('#exclusao-modal').modal();
+	}
+
+	function ExcluirRegistro(id) {
+		var url = "@Url.Action("Excluir", "Produto")";
+
+		$.ajax({
+			type: 'POST',
+			url: url,
+			data: { id : id },
+			contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+			dataType: "json",
+			success: function (dados)
+			{
+				if (dados.status) {
+					window.location.href = "@Url.Action("Index", "Produto")";
+				}
+			}
+		});
+	}
+</script>
