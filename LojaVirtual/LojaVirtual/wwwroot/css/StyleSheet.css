@@ -6,6 +6,10 @@
 	display: block;
 }
 
+.Imagens .col-md-2 {
+	margin-bottom: 30px;
+}
+
 .Imagens div {
 	text-align: center;
 }
@@ -14,6 +18,22 @@
 	margin-bottom: 30px;
 }
 
-.img-thumbnail {
+.Imagens .btn-ocultar {
+	display: none;
+}
+
+.Imagens .img-thumbnail {
 	width: 100%;
+}
+
+.Imagens .input-file {
+	display: none;
+}
+
+.Imagens .img-upload {
+	cursor: pointer;
+}
+
+.Imagens input[name=imagem] {
+	display: none;
 }

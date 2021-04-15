@@ -17,7 +17,12 @@ namespace LojaVirtual.Libraries.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            if (HttpMethods.IsPost(context.Request.Method) && !context.Request.Path.ToString().Contains("Excluir")) 
+            var header = context.Request.Headers["x-requested-with"];
+            bool ajax = header == "XMLHttpRequest";
+
+            if ((HttpMethods.IsPost(context.Request.Method)) && 
+               !context.Request.Path.ToString().Contains("Excluir") &&
+               !(context.Request.Form.Files.Count == 1 && ajax))
             {
                 await _antiforgery.ValidateRequestAsync(context);
             }
