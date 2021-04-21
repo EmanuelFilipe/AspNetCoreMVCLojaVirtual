@@ -25,6 +25,17 @@ namespace LojaVirtual.Repositories
             _banco.SaveChanges();
         }
 
+        public void CadastrarImagens(List<Imagem> listaImagens, int produtoId)
+        {
+            if (listaImagens != null && listaImagens.Count > 0)
+            {
+                foreach (var imagem in listaImagens)
+                {
+                    Cadastrar(imagem);
+                }
+            }
+        }
+
         public void Excluir(int id)
         {
             Imagem imagem = _banco.Imagens.Find(id);

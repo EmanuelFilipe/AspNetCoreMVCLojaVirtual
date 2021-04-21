@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LojaVirtual.Libraries.Arquivo;
 using LojaVirtual.Libraries.Filtro;
 using LojaVirtual.Libraries.Lang;
 using LojaVirtual.Models;
@@ -16,11 +17,13 @@ namespace LojaVirtual.Areas.Colaborador.Controllers
     {
         private IProdutoRepository _produtoRepository;
         private ICategoriaRepository _categoriaRepository;
+        private IImagemRepository _imagemRepository;
 
-        public ProdutoController(IProdutoRepository produtoRepository, ICategoriaRepository categoriaRepository)
+        public ProdutoController(IProdutoRepository produtoRepository, ICategoriaRepository categoriaRepository, IImagemRepository imagemRepository)
         {
             _produtoRepository = produtoRepository;
             _categoriaRepository = categoriaRepository;
+            _imagemRepository = imagemRepository;
         }
 
         public IActionResult Index(int? pagina, string pesquisa)
@@ -42,14 +45,24 @@ namespace LojaVirtual.Areas.Colaborador.Controllers
             if (ModelState.IsValid)
             {
                 _produtoRepository.Cadastrar(produto);
+
+                var listPathTemp = new List<string>(Request.Form["imagem"]);
+
+                List<Imagem> listaImgensDefinitivo = GerenciadorArquivo.MoverImagensProduto(listPathTemp, produto.Id);
+                _imagemRepository.CadastrarImagens(listaImgensDefinitivo, produto.Id);
+
                 TempData["MSG_S"] = Mensagem.MSG_S001;
 
                 return RedirectToAction(nameof(Index));
             }
+            else
+            {
+                ViewBag.Categorias = _categoriaRepository.GetAllCategorias().Select(c => new SelectListItem(c.Nome, c.Id.ToString()));
+                produto.Imagens = new List<string>(Request.Form["imagem"]).Where(im => im.Trim().Length > 0)
+                                                                          .Select(i => new Imagem() { Caminho = i }).ToList();
 
-
-            ViewBag.Categorias = _categoriaRepository.GetAllCategorias().Select(c => new SelectListItem(c.Nome, c.Id.ToString()));
-            return View();
+                return View(produto);
+            }
         }
 
         public IActionResult Atualizar(int id)
@@ -67,14 +80,25 @@ namespace LojaVirtual.Areas.Colaborador.Controllers
             if (ModelState.IsValid)
             {
                 _produtoRepository.Atualizar(produto);
+
+                var listPathTemp = new List<string>(Request.Form["imagem"]);
+
+                List<Imagem> listaImgensDefinitivo = GerenciadorArquivo.MoverImagensProduto(listPathTemp, produto.Id);
+                _imagemRepository.ExcluirImagensDoProduto( produto.Id);
+                _imagemRepository.CadastrarImagens(listaImgensDefinitivo, produto.Id);
+
                 TempData["MSG_S"] = Mensagem.MSG_S001;
 
                 return RedirectToAction(nameof(Index));
             }
+            else
+            {
+                ViewBag.Categorias = _categoriaRepository.GetAllCategorias().Select(c => new SelectListItem(c.Nome, c.Id.ToString()));
+                produto.Imagens = new List<string>(Request.Form["imagem"]).Where(im => im.Trim().Length > 0)
+                                                                          .Select(i => new Imagem() { Caminho = i }).ToList();
 
-
-            ViewBag.Categorias = _categoriaRepository.GetAllCategorias().Select(c => new SelectListItem(c.Nome, c.Id.ToString()));
-            return View();
+                return View(produto);
+            }
         }
 
 
