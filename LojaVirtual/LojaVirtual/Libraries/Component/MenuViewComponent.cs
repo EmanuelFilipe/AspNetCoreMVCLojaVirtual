@@ -1,0 +1,25 @@
+﻿using LojaVirtual.Repositories.Contracts;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace LojaVirtual.Libraries.Component
+{
+    public class MenuViewComponent : ViewComponent
+    {
+        private ICategoriaRepository _categoriaRepository;
+
+        public MenuViewComponent(ICategoriaRepository categoriaRepository)
+        {
+            _categoriaRepository = categoriaRepository;
+        }
+
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            var listaCategorias = _categoriaRepository.GetAllCategorias();
+            return View(listaCategorias);
+        }
+    }
+}

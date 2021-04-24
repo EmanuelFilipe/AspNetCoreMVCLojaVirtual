@@ -53,6 +53,11 @@ namespace LojaVirtual.Controllers
             return View();
         }
 
+        public IActionResult Categoria()
+        {
+            return View();
+        }
+
         public IActionResult Contato()
         {
             return View();
