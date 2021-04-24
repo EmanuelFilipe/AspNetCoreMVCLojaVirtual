@@ -104,7 +104,7 @@
 	</div>
 
 	<div class="row Imagens">
-		@{ 
+		@{
 			List<Imagem> imagens = new List<Imagem>();
 
 			if (Model != null)
@@ -119,16 +119,20 @@
 			{
 				<div class="col-md-2">
 					<input type="file" class="input-file" />
-					<img src="@imagens.ElementAtOrDefault(i).Caminho" class="img-thumbnail img-upload" />
+					<div class="container-img-thumbnail">
+						<img src="@imagens.ElementAtOrDefault(i).Caminho" class="img-thumbnail img-upload" />
+					</div>
 					<div class="btn btn-danger btn-imagem-excluir">X</div>
-					<input type="text" name="imagem" value="@imagens.ElementAtOrDefault(i)" />
+					<input type="text" name="imagem" value="@imagens.ElementAtOrDefault(i).Caminho" />
 				</div>
 			}
 			else
 			{
 				<div class="col-md-2">
 					<input type="file" class="input-file" />
-					<img src="~/img/imagem-padrao.png" class="img-thumbnail img-upload" />
+					<div class="container-img-thumbnail">
+						<img src="~/img/imagem-padrao.png" class="img-thumbnail img-upload" />
+					</div>
 					<div class="btn btn-danger btn-imagem-excluir btn-ocultar">X</div>
 					<input type="text" name="imagem" />
 				</div>

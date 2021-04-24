@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace LojaVirtual.Areas.Colaborador.Controllers
 {
     [Area("Colaborador")]
+    //[ColaboradorAutorizacao]
     public class ProdutoController : Controller
     {
         private IProdutoRepository _produtoRepository;
@@ -106,6 +107,11 @@ namespace LojaVirtual.Areas.Colaborador.Controllers
         [ValidateHttpReferer]
         public JsonResult Excluir([FromForm]int id)
         {
+            var produto = _produtoRepository.GetProduto(id);
+            GerenciadorArquivo.ExcluirImagensProduto(produto.Imagens.ToList());
+
+            _imagemRepository.ExcluirImagensDoProduto(id);
+
             _produtoRepository.Excluir(id);
 
             return Json(new { status = true, mensagem = Mensagem.MSG_S002 });

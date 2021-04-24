@@ -13,7 +13,7 @@ function AjaxUploadImagemProduto() {
 	$(".img-upload").click(function () {
 		//this = a propria imagem... parent é o pai da imagem... 
 		//e procura pela classe ".input-file"...o ponto é pq é uma classe css
-		$(this).parent().find(".input-file").click();
+		$(this).parent().parent().find(".input-file").click();
 	});
 
 	$(".btn-imagem-excluir").click(function () {
@@ -51,6 +51,9 @@ function AjaxUploadImagemProduto() {
 		//file é o mesmo nome que a action de Armazenar recebe, os nomes devem ser os mesmos.
 		formulario.append("file", binary);
 
+		//apresenta imagem loading
+		imagem.attr("src", "/img/loading.gif");
+
 		$.ajax({
 			type: 'POST',
 			url: "/Colaborador/Imagem/Armazenar",
@@ -64,6 +67,7 @@ function AjaxUploadImagemProduto() {
 			},
 			error: function () {
 				alert("Erro no envio do arquivo");
+				imagem.attr("src", "/img/imagem-padrao.png");
 			}
 		});
 	});
