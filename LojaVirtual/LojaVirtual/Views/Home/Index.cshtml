@@ -1,8 +1,9 @@
-﻿@model LojaVirtual.Models.NewsLetterEmail
+﻿@model LojaVirtual.Models.ViewModels.IndexViewModel
 
 @{
 	ViewData["Title"] = "Index";
-
+	var pesquisa = Context.Request.Query["pesquisa"];
+	var ordenacao = Context.Request.Query["ordenacao"].ToString();
 }
 
 <main role="main">
@@ -74,136 +75,89 @@
 			================================================== -->
 	<!-- Wrap the rest of the page in another container to center all the content. -->
 
+	@if (Model.lista.Count > 0)
+	{
+		<div class="container" id="code_prod_complex">
+			<div class="row">
+				<div class="offset-md-10 col-md-2">
+					<select id="ordenacao" class="form-control" asp-for="@ordenacao" asp-items="Model.ordenacao"></select>
+				</div>
 
-	<div class="container" id="code_prod_complex">
-		<div class="row">
-			<div class="col-md-4">
-				<figure class="card card-product">
-					<div class="img-wrap"><img src="images/items/1.jpg"></div>
-					<figcaption class="info-wrap">
-						<h4 class="title">Another name of item</h4>
-						<p class="desc">Some small description goes here</p>
-						<div class="rating-wrap">
-							<ul class="rating-stars">
-								<li style="width:80%" class="stars-active">
-									<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-								</li>
-								<li>
-									<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-								</li>
-							</ul>
-							<div class="label-rating">132 reviews</div>
-							<div class="label-rating">154 orders </div>
-						</div> <!-- rating-wrap.// -->
-					</figcaption>
-					<div class="bottom-wrap">
-						<a href="" class="btn btn-sm btn-primary float-right">Order Now</a>
-						<div class="price-wrap h5">
-							<span class="price-new">$1280</span> <del class="price-old">$1980</del>
-						</div> <!-- price-wrap.// -->
-					</div> <!-- bottom-wrap.// -->
-				</figure>
-			</div> <!-- col // -->
-			<div class="col-md-4">
-				<figure class="card card-product">
-					<div class="img-wrap"><img src="images/items/2.jpg"> </div>
-					<figcaption class="info-wrap">
-						<h4 class="title">Good product</h4>
-						<p class="desc">Some small description goes here</p>
-						<div class="rating-wrap">
-							<ul class="rating-stars">
-								<li style="width:80%" class="stars-active">
-									<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-								</li>
-								<li>
-									<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-								</li>
-							</ul>
-							<div class="label-rating">132 reviews</div>
-							<div class="label-rating">154 orders </div>
-						</div> <!-- rating-wrap.// -->
-					</figcaption>
-					<div class="bottom-wrap">
-						<a href="" class="btn btn-sm btn-primary float-right">Order Now</a>
-						<div class="price-wrap h5">
-							<span class="price-new">$1280</span> <del class="price-old">$1980</del>
-						</div> <!-- price-wrap.// -->
-					</div> <!-- bottom-wrap.// -->
-				</figure>
-			</div> <!-- col // -->
-			<div class="col-md-4">
-				<figure class="card card-product">
-					<div class="img-wrap"><img src="images/items/3.jpg"></div>
-					<figcaption class="info-wrap">
-						<h4 class="title">Product name goes here</h4>
-						<p class="desc">Some small description goes here</p>
-						<div class="rating-wrap">
-							<ul class="rating-stars">
-								<li style="width:80%" class="stars-active">
-									<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-								</li>
-								<li>
-									<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-								</li>
-							</ul>
-							<div class="label-rating">132 reviews</div>
-							<div class="label-rating">154 orders </div>
-						</div> <!-- rating-wrap.// -->
-					</figcaption>
-					<div class="bottom-wrap">
-						<a href="" class="btn btn-sm btn-primary float-right">Order Now</a>
-						<div class="price-wrap h5">
-							<span class="price-new">$1280</span> <del class="price-old">$1980</del>
-						</div> <!-- price-wrap.// -->
-					</div> <!-- bottom-wrap.// -->
-				</figure>
-			</div> <!-- col // -->
-		</div> <!-- row.// -->
-	</div>
+				@foreach (var produto in Model.lista)
+				{
+					<div class="col-md-3">
+						<figure class="card card-product">
+							<div class="img-wrap">
+								@if (produto.Imagens != null && produto.Imagens.Count > 0)
+								{
+									<img src="@produto.Imagens.ElementAt(0).Caminho">
+								}
+								else
+								{
+									<img src="~/img/imagem-produto.png" />
+								}
+							</div>
+							<figcaption class="info-wrap">
+								<h4 class="title">@produto.Nome</h4>
 
+							</figcaption>
+							<div class="bottom-wrap">
+								<a href="" class="btn btn-sm btn-primary float-right">Adicionar Carrinho</a>
+								<div class="price-wrap h5">
+									<span class="price-new">@produto.Valor.ToString("C")</span>
+								</div> <!-- price-wrap.// -->
+							</div> <!-- bottom-wrap.// -->
+						</figure>
+					</div> <!-- col // -->
+
+				}
+			</div> <!-- row.// -->
+
+			@Html.PagedListPager((IPagedList)Model.lista, pagina => Url.Action("Index", new { pagina = pagina, pesquisa = pesquisa, ordenacao = ordenacao }))
+		</div>
+	}
 </main>
 
 @{
-/*
-	Razor - motor de template do asp.net
-	Html.Helper - interface proporciona gerar codigo html pelo C#
+	/*
+		Razor - motor de template do asp.net
+		Html.Helper - interface proporciona gerar codigo html pelo C#
 
-	URL: #Fragmento (links html tipo âncora)
+		URL: #Fragmento (links html tipo âncora)
 	
-	@using(Html.BeginForm("Index", "Home", FormMethod.Post))
-
-*/
+		@using(Html.BeginForm("Index", "Home", FormMethod.Post))
+	*/
 }
 
 
-@using (Html.BeginForm(null, null, null, FormMethod.Post, false, new { @action = @Url.Action("Index", "Home") + "#formulario" }))
+@using (Html.BeginForm(null, null, null, FormMethod.Post, true, new { @action = @Url.Action("Index", "Home") + "#formulario" }))
 {
-	<div class="container" id="formulario">
-		<div class="row">
-			<div class="col-sm-8 offset-sm-2">
-				@if (TempData["msg_s"] != null)
-				{
-					<p class="alert alert-success">@TempData["msg_s"]</p>
-				}
-				</div>
-				<div class="col-sm-6 offset-sm-2">
-					@* irá direcionar após salvar *@
-					<div class="form-group">
-						<label for="nome">Cadastre seu e-mail para receber promoções:</label>
-						<div class="input-group">
-							<div class="input-group-prepend">
-								<span class="input-group-text"><i class="fa fa-envelope"></i></span>
-							</div>
-							@Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control" } })
-						</div>
-
-						<span style="color: red">@Html.ValidationMessageFor(m => m.Email)</span>
+<div class="container" id="formulario">
+	<div class="row">
+		<div class="col-sm-8 offset-sm-2">
+			@if (TempData["msg_s"] != null)
+			{
+				<p class="alert alert-success">@TempData["msg_s"]</p>
+			}
+		</div>
+		<div class="col-sm-6 offset-sm-2">
+			@* irá direcionar após salvar *@
+			<div class="form-group">
+				<label for="nome">Cadastre seu e-mail para receber promoções:</label>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fa fa-envelope"></i></span>
 					</div>
+					@Html.EditorFor(m => m.newsLetter.Email, new { htmlAttributes = new { @class = "form-control" } })
 				</div>
-				<div class="col-sm-2">
-					<br />
-					<button class="subscribe btn btn-primary btn-block" type="submit" style="margin-top: 7px;"> Cadastrar </button>
-				</div>
+
+				<span style="color: red">@Html.ValidationMessageFor(m => m.newsLetter.Email)</span>
 			</div>
 		</div>
+		<div class="col-sm-2">
+			<br />
+			<button class="subscribe btn btn-primary btn-block" type="submit" style="margin-top: 7px;"> Cadastrar </button>
+		</div>
+	</div>
+</div>
 }

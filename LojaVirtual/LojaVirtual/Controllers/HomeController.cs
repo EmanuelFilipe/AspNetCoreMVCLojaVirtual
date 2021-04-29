@@ -9,6 +9,7 @@ using LojaVirtual.Libraries.Email;
 using LojaVirtual.Libraries.Filtro;
 using LojaVirtual.Libraries.Login;
 using LojaVirtual.Models;
+using LojaVirtual.Models.ViewModels;
 using LojaVirtual.Repositories.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,29 +18,34 @@ namespace LojaVirtual.Controllers
 {
     public class HomeController : Controller
     {
+        private IProdutoRepository _produtoRepository;
         private IClienteRepository _repositoryCliente;
         private INewsLetterRepository _newsLetterRepository;
         private LoginCliente _loginCliente;
         private GerenciarEmail _gerenciarEmail;
 
-        public HomeController(IClienteRepository repositoryCliente,
+        public HomeController(IProdutoRepository produtoRepository,
+                              IClienteRepository repositoryCliente,
                               INewsLetterRepository newsLetterRepository,
                               LoginCliente loginCliente,
                               GerenciarEmail gerenciarEmail)
         {
+            _produtoRepository = produtoRepository;
             _repositoryCliente = repositoryCliente;
             _newsLetterRepository = newsLetterRepository;
             _loginCliente = loginCliente;
             _gerenciarEmail = gerenciarEmail;
+
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? pagina, string pesquisa, string ordenacao)
         {
-            return View();
+            var viewModel = new IndexViewModel { lista = _produtoRepository.GetAllProdutos(pagina, pesquisa, ordenacao) };
+            return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult Index(NewsLetterEmail model)
+        public IActionResult Index(int? pagina, string pesquisa, string ordenacao, [FromForm]NewsLetterEmail model)
         {
             if (ModelState.IsValid)
             {
@@ -50,7 +56,8 @@ namespace LojaVirtual.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View();
+            var viewModel = new IndexViewModel { lista = _produtoRepository.GetAllProdutos(pagina, pesquisa, ordenacao) };
+            return View(viewModel);
         }
 
         public IActionResult Categoria()
