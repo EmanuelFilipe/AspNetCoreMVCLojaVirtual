@@ -17,7 +17,11 @@ namespace LojaVirtual.Repositories.Contracts
 
         Categoria GetCategoria(int id);
 
+        Categoria GetCategoria(string slug);
+
         IEnumerable<Categoria> GetAllCategorias();
+
+        IEnumerable<Categoria> GetCategoriasRecursivas(Categoria categoriaPai);
 
         IPagedList<Categoria> GetAllCategorias(int? pagina);
     }

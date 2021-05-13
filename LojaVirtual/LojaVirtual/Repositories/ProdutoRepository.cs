@@ -47,10 +47,10 @@ namespace LojaVirtual.Repositories
 
         public IPagedList<Produto> GetAllProdutos(int? pagina, string pesquisa)
         {
-            return GetAllProdutos(pagina, pesquisa, "A");
+            return GetAllProdutos(pagina, pesquisa, "A", null);
         }
 
-        public IPagedList<Produto> GetAllProdutos(int? pagina, string pesquisa, string ordenacao)
+        public IPagedList<Produto> GetAllProdutos(int? pagina, string pesquisa, string ordenacao, IEnumerable<Categoria> categorias)
         {
             int numeroPagina = pagina ?? 1;
             var bancoProduto = _banco.Produtos.AsQueryable();
@@ -67,6 +67,11 @@ namespace LojaVirtual.Repositories
             if (ordenacao == "MA")
                 bancoProduto = bancoProduto.OrderByDescending(p => p.Valor);
 
+            if (categorias != null && categorias.Count() > 0)
+            {
+                // SQL WHERE Categorias IN (1,5, ....)
+                bancoProduto = bancoProduto.Where(p => categorias.Select(c => c.Id).Contains(p.CategoriaId));
+            }
 
             return bancoProduto.Include(i => i.Imagens).ToPagedList<Produto>(numeroPagina, _configuration.GetValue<int>("RegistroPorPagina"));
         }

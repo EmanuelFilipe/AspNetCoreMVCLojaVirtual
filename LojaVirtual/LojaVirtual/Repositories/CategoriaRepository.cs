@@ -15,6 +15,10 @@ namespace LojaVirtual.Repositories
     {
         LojaVirtualContext _banco;
         private IConfiguration _configuration;
+        private List<Categoria> listaCategoriaRecursiva = new List<Categoria>();
+        private List<Categoria> categorias;
+
+
 
         public CategoriaRepository(LojaVirtualContext banco, IConfiguration configuration)
         {
@@ -60,6 +64,37 @@ namespace LojaVirtual.Repositories
         public Categoria GetCategoria(int id)
         {
             return _banco.Categorias.Find(id);
+        }
+
+        public Categoria GetCategoria(string slug)
+        {
+            return _banco.Categorias.Where(c => c.Slug == slug).FirstOrDefault();
+        }
+
+        public IEnumerable<Categoria> GetCategoriasRecursivas(Categoria categoriaPai)
+        {
+            if (categorias == null)
+            {
+                categorias = GetAllCategorias().ToList();
+            }
+            
+            if (!listaCategoriaRecursiva.Exists(c => c.Id == categoriaPai.Id))
+            {
+                listaCategoriaRecursiva.Add(categoriaPai);
+            }
+
+            var listaCategoriaFilho = categorias.Where(c => c.CategoriaPaiId == categoriaPai.Id);
+
+            if (listaCategoriaFilho.Count() > 0)
+            {
+                listaCategoriaRecursiva.AddRange(listaCategoriaFilho.ToList());
+                foreach (var categoria in listaCategoriaFilho)
+                {
+                    GetCategoriasRecursivas(categoria);
+                }
+            }
+
+            return listaCategoriaRecursiva;
         }
     }
 }
