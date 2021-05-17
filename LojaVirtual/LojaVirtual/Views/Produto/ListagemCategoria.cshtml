@@ -1,5 +1,17 @@
-﻿@{
+﻿@model Categoria
+
+@{
 	ViewData["Title"] = "Categoria";
 }
-<br />
+
+<br style="clear: both" />
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<span id="breadcrumb">Categoria > @Model.Nome </span><br />
+		</div>
+	</div>
+</div>
+
 <vc:produto-listagem></vc:produto-listagem>

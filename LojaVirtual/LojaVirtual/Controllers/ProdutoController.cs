@@ -22,15 +22,14 @@ namespace LojaVirtual.Controllers
         }
 
         [Route("/Produto/Categoria/{slug}")]
-        public IActionResult ListagemCategoria()
+        public IActionResult ListagemCategoria(string slug)
         {
-            return View();
+            return View(_categoriaRepository.GetCategoria(slug));
         }
 
-        public ActionResult Visualizar()
+        public ActionResult Visualizar(int id)
         {
-            Produto produto = GetProduto();
-            return View(produto);
+            return View(_produtoRepository.GetProduto(id));
         }
 
         private List<Categoria> GetCategorias(List<Categoria> categorias, Categoria categoriaPrincipal)
@@ -53,16 +52,6 @@ namespace LojaVirtual.Controllers
 
             return lista;
         }
-
-        private Produto GetProduto()
-        {
-            return new Produto()
-            {
-                Id = 1,
-                Nome = "PS5",
-                Descricao = "Jogue em 4k",
-                Valor = 2000.00M
-            };
-        }
+        
     }
 }

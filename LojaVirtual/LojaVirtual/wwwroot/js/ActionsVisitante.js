@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
 	MoverScrollOrdenacao();
 	MudarOrdenacao();
+	MudarImagemPrincipalProduto();
 });
 
 function MoverScrollOrdenacao() {
@@ -18,6 +19,7 @@ function MudarOrdenacao() {
 		var pagina = 1;
 		var pesquisa = "";
 		var ordenacao = $(this).val();
+		var fragmento = "#posicao-produto";
 
 		var queryString = new URLSearchParams(window.location.search);
 
@@ -29,9 +31,22 @@ function MudarOrdenacao() {
 			pesquisa = queryString.get("pesquisa");
 		}
 
+		if ($("#breadcrumb").length > 0) {
+			fragmento = "";
+		}
+
 		var URL = window.location.protocol + "//" + window.location.host + window.location.pathname;
 		var URLParametros = URL + "?pagina=" + pagina + "&pesquisa=" + pesquisa + "&ordenacao=" + ordenacao + "#posicao-produto";
 
 		window.location.href = URLParametros;
 	});
+}
+
+function MudarImagemPrincipalProduto() {
+	$(".img-small-wrap img").click(function () {
+		var caminho = $(this).attr("src");
+		$(".img-big-wrap img").attr("src", caminho);
+		$(".img-big-wrap a").attr("href", caminho);
+	});
+
 }
