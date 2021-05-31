@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LojaVirtual.Libraries.Arquivo;
+﻿using LojaVirtual.Libraries.Arquivo;
 using LojaVirtual.Libraries.Filtro;
 using LojaVirtual.Libraries.Lang;
 using LojaVirtual.Models;
+using LojaVirtual.Models.ProdutoAgregador;
 using LojaVirtual.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LojaVirtual.Areas.Colaborador.Controllers
 {

@@ -1,4 +1,5 @@
 ﻿using LojaVirtual.DataBase;
+using LojaVirtual.Libraries.CarrinhoCompra;
 using LojaVirtual.Libraries.Email;
 using LojaVirtual.Libraries.Login;
 using LojaVirtual.Libraries.Middleware;
@@ -52,6 +53,8 @@ namespace LojaVirtual
             });
 
             services.AddScoped<GerenciarEmail>();
+            services.AddScoped<Libraries.Cookie.Cookie>();
+            services.AddScoped<CarrinhoCompra>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -67,7 +70,7 @@ namespace LojaVirtual
             });
 
             services.AddScoped<Sessao>();
-            services.AddScoped<Libraries.Cookie.Cookie>();
+            //services.AddScoped<Libraries.Cookie.Cookie>();
             services.AddScoped<LoginCliente>();
             services.AddScoped<LoginColaborador>();
 
