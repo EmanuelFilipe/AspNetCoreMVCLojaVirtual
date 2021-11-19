@@ -1,4 +1,6 @@
-﻿using LojaVirtual.DataBase;
+﻿using AutoMapper;
+using LojaVirtual.DataBase;
+using LojaVirtual.Libraries.AutoMapper;
 using LojaVirtual.Libraries.CarrinhoCompra;
 using LojaVirtual.Libraries.Email;
 using LojaVirtual.Libraries.Login;
@@ -29,6 +31,10 @@ namespace LojaVirtual
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //AutoMapper
+            services.AddAutoMapper(config => config.AddProfile<MappingProfile>());
+
+            // Padrão Repository
             services.AddHttpContextAccessor();
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<INewsLetterRepository, NewsLetterRepository>();

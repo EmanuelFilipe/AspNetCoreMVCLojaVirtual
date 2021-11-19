@@ -27,10 +27,10 @@ namespace LojaVirtual.Libraries.CarrinhoCompra
                 lista = Consultar();
                 var itemLocalizado = lista.SingleOrDefault(i => i.Id == item.Id);
 
-                if (itemLocalizado != null)
+                if (itemLocalizado == null)
                     lista.Add(item);
                 else
-                    itemLocalizado.Quantidade += 1;
+                    itemLocalizado.QuantidadeProdutoCarrinho += 1;
             }
             else
             {
@@ -60,7 +60,7 @@ namespace LojaVirtual.Libraries.CarrinhoCompra
 
             if (itemLocalizado != null)
             {
-                itemLocalizado.Quantidade = item.Quantidade;
+                itemLocalizado.QuantidadeProdutoCarrinho = item.QuantidadeProdutoCarrinho;
                 Salvar(lista);
             }
         }

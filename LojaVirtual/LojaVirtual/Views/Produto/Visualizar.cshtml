@@ -63,24 +63,9 @@
 								<dd class="col-sm-7">@Model.Comprimento</dd>
 								<dt class="col-sm-5">Quantidade em estoque</dt>
 								<dd class="col-sm-7">@Model.Quantidade</dd>
-							</dl>
+							</dl>					
 							<hr>
-							<div class="row">
-								<div class="col-sm-5">
-									<dl class="dlist-inline">
-										<dt>Quantity: </dt>
-										<dd>
-											<select class="form-control form-control-sm" style="width:70px;">
-												<option> 1 </option>
-												<option> 2 </option>
-												<option> 3 </option>
-											</select>
-										</dd>
-									</dl>  <!-- item-property .// -->
-								</div> <!-- col.// -->
-							</div> <!-- row.// -->
-							<hr>
-							<a href="#" class="btn  btn-outline-primary"> <i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho </a>
+							<a asp-controller="CarrinhoCompra" asp-action="AdicionarItem" asp-route-id="@Model.Id" class="btn  btn-outline-primary"> <i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho </a>
 						</article> <!-- card-body.// -->
 					</aside> <!-- col.// -->
 				</div> <!-- row.// -->
